@@ -1,0 +1,3 @@
+The architectural style suitable for this solution is a Service-Oriented Architecture (SOA). Here's the explanation for this architecture style choice:
+Integration of Various Components(desktop, web, mobile, third-party) that directly interact with the database. This will enable seamless interaction and data consistency across different applications.
+Centralize data management, ensuring that all accesses and updates to the data are handled consistently.
