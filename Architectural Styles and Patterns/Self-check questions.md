@@ -1,4 +1,4 @@
-1. What are the cons and pros of the Monolith architectural style?
+## 1. What are the cons and pros of the Monolith architectural style?
 Pros of Monolithic Architecture:
 Simplicity: A monolithic application is a single and it easier to test, deploy.
 Performance: Since components are tightly integrated and run in the same process, there are no inter-process communication delays.
@@ -12,7 +12,7 @@ Technology Stack Dependency: It's often locked to a specific technology stack, w
 Development Constraints: Large monolithic applications can become complex and difficult to understand, making the development process slower as the application grows.
 Code Entanglement: As the codebase grows, different modules can become tightly coupled, making it difficult to make changes without affecting other parts of the system.
 
-2. What are the cons and pros of the Microservices architectural style?
+## 2. What are the cons and pros of the Microservices architectural style?
 Pros of Microservices:
 Scalability: Each microservice can be scaled independently based on demand for the specific service.
 Microservices promote the use of small, autonomous teams, which can develop, deploy, and scale their respective services independently.
@@ -28,7 +28,7 @@ Monitoring and Logging: Collecting logs and monitoring different services distri
 Increased Network Latency: Communication between microservices over a network can add latency.
 Data Management: Data consistency and management become challenging as data might be distributed across various databases belonging to different microservices.
 
-3. What is the difference between SOA and Microservices?
+## 3. What is the difference between SOA and Microservices?
 Both architectural styles that are used to design and build software applications as a collection of services.
 
 Scope: SOA is typically used for integrating various large and complex enterprise systems, while Microservices are used to develop individual and independently deployable services.
@@ -38,11 +38,11 @@ Deployment: In SOA, services are usually deployed as a monolith, whereas Microse
 Technology: SOA often enforces the use of specific enterprise standards, while Microservices allow for using different technologies and programming languages best suited for specific services.
 Microservices offer a more flexible, scalable, and resilient approach, making it popular for modern cloud-based applications.
 
-4. What does hybrid architectural style mean? Think of your current and previous projects and try to describe which architectural styles they most likely followed.
+## 4. What does hybrid architectural style mean? Think of your current and previous projects and try to describe which architectural styles they most likely followed.
 Hybrid architectural style in the context of software architecture refers to the combination of two or more distinct architectural styles to leverage the benefits of each.
 In describing past projects, one might recognize a project that primarily followed a monolithic architecture, where the application was built as a single and indivisible unit, often leading to challenges with scalability and maintainability as the application grew. Another project may have implemented a service-oriented architecture (SOA), focusing on providing services across different platforms and allowing for interoperability, which would be crucial for enterprise-level applications that require integration of diverse software systems.
 
-5. Name several examples of the distributed architectures. What do ACID and BASE terms mean.
+## 5. Name several examples of the distributed architectures. What do ACID and BASE terms mean.
 Distributed architectures are systems in which components are located on different networked computers and communicate by passing messages. Examples include:
 client-server, service-oriented (SOA), microservices, serverless.
 
@@ -58,7 +58,7 @@ Basically Available indicates that the system is available, but there might be s
 Soft state means that the state of the system could change over time, even without input.
 Eventual consistency means that the system will become consistent over time but does not guarantee immediate consistency after a transaction.
 
-6. Name several use cases where Serverless architecture would be beneficial.
+## 6. Name several use cases where Serverless architecture would be beneficial.
 Allow developers to quickly create and scale APIs without the need to manage server infrastructure.
 Event-driven applications: Serverless architecture is well-suited for applications that respond to events or triggers.
 Microservices: Serverless architecture facilitates the development and deployment of microservices by allowing each service to independently scale and operate without the need for server management.
