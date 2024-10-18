@@ -8,7 +8,7 @@ namespace OnlineShopping.CartService.WebApi.UI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CartsController(ILogger<CartsController> logger,
+    public class CartItemsController(ILogger<CartItemsController> logger,
             ICartItemsService _cartItemsService,
             IMapper mapper) : ControllerBase
     {

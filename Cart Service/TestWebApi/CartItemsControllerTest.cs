@@ -10,7 +10,7 @@ using OnlineShopping.CartService.WebApi.UI.Controllers;
 namespace TestWebApi
 {
     [TestFixture]
-    internal class CartsControllerTest
+    internal class CartItemsControllerTest
     {
         [Test]
         public void DeleiteMethdTest()
@@ -20,7 +20,7 @@ namespace TestWebApi
             mockCartItemsService.Setup(service => service.Delete(It.IsAny<int>()))
                 .Returns(true);
 
-            var controller = new CartsController(Mock.Of<ILogger<CartsController>>()
+            var controller = new CartItemsController(Mock.Of<ILogger<CartItemsController>>()
                 , mockCartItemsService.Object
                 , Mock.Of<IMapper>());
 
@@ -48,7 +48,7 @@ namespace TestWebApi
                 .Returns(mockLiteDatabase.Object);
             var cartItemsService = new CartItemsService(mockLiteDbContext.Object);
 
-            var controller = new CartsController(Mock.Of<ILogger<CartsController>>()
+            var controller = new CartItemsController(Mock.Of<ILogger<CartItemsController>>()
                 , cartItemsService
                 , Mock.Of<IMapper>());
 
