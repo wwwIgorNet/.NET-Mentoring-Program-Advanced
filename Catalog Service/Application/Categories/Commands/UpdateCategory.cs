@@ -1,5 +1,4 @@
 ﻿using Ardalis.GuardClauses;
-using AutoMapper;
 using MediatR;
 using OnlineShopping.CatalogService.Application.Common.Interfaces;
 using OnlineShopping.CatalogService.Domain.Enteties;
@@ -14,7 +13,7 @@ public class UpdateCategoryCommand : IRequest
     public int? ParentCategoryId { get; set; }
 }
 
-public class UpdateCategoryCommandHandler(IRepository<Category> repository, IMapper mapper) 
+public class UpdateCategoryCommandHandler(IRepository<Category> repository) 
     : IRequestHandler<UpdateCategoryCommand>
 {
     public async Task Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)

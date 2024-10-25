@@ -6,9 +6,16 @@ using System.Linq.Expressions;
 
 namespace OnlineShopping.CatalogService.Application.Common.Models;
 
-public abstract class ReadOnlyRepositoryBase<TEntity>(IQueryable<TEntity> source)
+public class ReadOnlyRepositoryBase<TEntity>
     : IReadOnlyRepository<TEntity> where TEntity : BaseEntity
 {
+    protected readonly IQueryable<TEntity> _source;
+
+    protected ReadOnlyRepositoryBase(IQueryable<TEntity> source)
+    {
+        _source = source;
+    }
+
     public virtual async Task<PaginatedList<TDestination>> List<TOrderBy, TDestination>(
         Expression<Func<TEntity, bool>>? predicate = null,
         Expression<Func<TEntity, TOrderBy>>? orderBy = null,
@@ -16,7 +23,7 @@ public abstract class ReadOnlyRepositoryBase<TEntity>(IQueryable<TEntity> source
         PagingOptions? pagingOptions = null)
         where TDestination : class
     {
-        var query = source;
+        var query = _source;
         if (predicate is not null)
         {
             query = query.Where(predicate);
@@ -27,7 +34,7 @@ public abstract class ReadOnlyRepositoryBase<TEntity>(IQueryable<TEntity> source
             query = query.OrderBy(orderBy);
         }
 
-        var count = await Task.Run(source.Count);
+        var count = await Task.Run(_source.Count);
         var pageNumber = 1;
         var pageSize = count;
         if (pagingOptions is not null)
@@ -42,5 +49,8 @@ public abstract class ReadOnlyRepositoryBase<TEntity>(IQueryable<TEntity> source
         return new PaginatedList<TDestination>(await Task.Run(targetResalt.ToList), count, pageNumber, pageSize);
     }
 
-    public abstract Task<TEntity?> TryGetAsync(int id);
+    public Task<TEntity?> TryGetAsync(int id)
+    {
+        return Task.Run(() => _source.FirstOrDefault(x => x.Id == id));
+    }
 }
