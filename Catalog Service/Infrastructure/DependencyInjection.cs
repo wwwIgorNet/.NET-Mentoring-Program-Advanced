@@ -22,6 +22,7 @@ public static class DependencyInjection
             options.UseSqlServer(connectionString);
         });
 
+        services.AddTransient<IRepository<Category>, CategoryRepository>();
         services.AddTransient<IReadOnlyRepository<Category>, CategoryRepository>();
 
         return services;
