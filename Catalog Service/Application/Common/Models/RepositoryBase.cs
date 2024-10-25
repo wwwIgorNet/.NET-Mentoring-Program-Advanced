@@ -1,20 +1,22 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using OnlineShopping.CatalogService.Application.Common.Interfaces;
+using OnlineShopping.CatalogService.Domain.Common;
 using System.Linq.Expressions;
 
 namespace OnlineShopping.CatalogService.Application.Common.Models;
 
-public abstract class RepositoryBase<TEntety>(IQueryable<TEntety> source)
-    : IRepository<TEntety>
+public abstract class RepositoryBase<TEntity>(IQueryable<TEntity> source)
+    : IRepository<TEntity> where TEntity : BaseEntity
 {
-    public abstract Task Add(TEntety entety);
+    public abstract Task AddAsync(TEntity entity);
 
     public virtual async Task<PaginatedList<TDestination>> List<TOrderBy, TDestination>(
-        Expression<Func<TEntety, bool>>? predicate = null,
-        Expression<Func<TEntety, TOrderBy>>? orderBy = null,
+        Expression<Func<TEntity, bool>>? predicate = null,
+        Expression<Func<TEntity, TOrderBy>>? orderBy = null,
         IConfigurationProvider? configuration = null,
-        PagingOptions? pagingOptions = null) where TDestination : class
+        PagingOptions? pagingOptions = null)
+        where TDestination : class
     {
         var query = source;
         if (predicate is not null)
@@ -27,7 +29,7 @@ public abstract class RepositoryBase<TEntety>(IQueryable<TEntety> source)
             query = query.OrderBy(orderBy);
         }
 
-        var count = source.Count();
+        var count = await Task.Run(source.Count);
         var pageNumber = 1;
         var pageSize = count;
         if (pagingOptions is not null)
@@ -37,22 +39,14 @@ public abstract class RepositoryBase<TEntety>(IQueryable<TEntety> source)
             query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
         }
 
-        IQueryable<TDestination> targetResalt;
-        if (configuration is not null)
-        {
-            targetResalt = query.ProjectTo<TDestination>(configuration);
-        }
-        else
-        {
-            targetResalt = query.Cast<TDestination>();
-        }
+        IQueryable<TDestination> targetResalt = query.ProjectTo<TDestination>(configuration);
 
-        return new PaginatedList<TDestination>(targetResalt.ToList(), count, pageNumber, pageSize);
+        return new PaginatedList<TDestination>(await Task.Run(targetResalt.ToList), count, pageNumber, pageSize);
     }
 
-    public abstract Task<TEntety> Get(int entetyId);
+    public abstract Task<bool> TryDeleteAsync(TEntity entity);
 
-    public abstract Task Update(TEntety entetyp);
+    public abstract Task<TEntity?> TryGetAsync(int id);
 
-    public abstract Task Delete(TEntety entety);
+    public abstract Task<bool> TryUpdateAsync(TEntity entity);
 }

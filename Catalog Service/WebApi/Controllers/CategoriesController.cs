@@ -1,6 +1,8 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using OnlineShopping.CatalogService.Domain.Enteties;
+using OnlineShopping.CatalogService.Application.Categories.Commands;
+using OnlineShopping.CatalogService.Application.Categories.Queries;
+using OnlineShopping.CatalogService.Application.Common.Models;
 using OnlineShopping.CatalogService.Infrastructure.Data;
 
 namespace WebApi.Controllers
@@ -8,71 +10,42 @@ namespace WebApi.Controllers
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class CategoriesController(ApplicationDbContext applicationDbContext,
-        ILogger<CategoriesController> logger) : ControllerBase
+        ISender sender) : ControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> List()
+        public Task<PaginatedList<CategoryDto>> List([FromQuery] GetCategoriesWithPaginationQuery query)
         {
-            return Ok(await applicationDbContext.Categories.ToListAsync());
+            return sender.Send(query);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get([FromQuery]GetCategoryCommand command)
         {
-            var category = await applicationDbContext.Categories.FirstOrDefaultAsync(x => x.Id == id);
-            if (category != null)
-            {
-                return Ok(category);
-            }
-
-            return NotFound();
+            return Ok(await sender.Send(command));
         }
 
 
         [HttpPut]
-        public async Task<IActionResult> Add(CategoryDto categoryDto)
+        public async Task<IActionResult> Add(CreateCategoryCommand command)
         {
-            await applicationDbContext.Categories.AddAsync(new Category { Name = categoryDto.Name, Image = categoryDto.Image, ParentCategoryId = categoryDto.ParentCategoryId });
-            applicationDbContext.SaveChanges();
-
-            return Ok();
+            return Ok(await sender.Send(command));
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> Update(CategoryDto categoryDto)
+        public async Task<IActionResult> Update(UpdateCategoryCommand command)
         {
-            var category = await applicationDbContext.Categories.FirstOrDefaultAsync(x => x.Id == categoryDto.Id);
-            if (category != null)
-            {
-                applicationDbContext.SaveChanges();
-            }
-
-            return NotFound();
+           await sender.Send(command);
+            return Ok();
         }
 
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(DeleteCategoryCommand command)
         {
-            var category = await applicationDbContext.Categories.FirstOrDefaultAsync(x => x.Id == id);
-            if (category != null)
-            {
-                applicationDbContext.Categories.Remove(category);
-                applicationDbContext.SaveChanges();
+            await sender.Send(command);
 
-                return Ok();
-            }
-
-            return NotFound();
+            return Ok();
         }
-    }
-
-    public class CategoryDto
-    {
-        public int? Id { get; set; }
-        public required string Name { get; set; }
-        public string? Image { get; set; }
-        public int? ParentCategoryId { get; set; }
     }
 }

@@ -2,7 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OnlineShopping.CatalogService.Application.Common.Interfaces;
+using OnlineShopping.CatalogService.Domain.Enteties;
 using OnlineShopping.CatalogService.Infrastructure.Data;
+using OnlineShopping.CatalogService.Infrastructure.Repositories;
 
 namespace OnlineShopping.CatalogService.Infrastructure;
 
@@ -16,10 +19,10 @@ public static class DependencyInjection
 
         services.AddDbContext<ApplicationDbContext>((sp, options) =>
         {
-            //options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
-
             options.UseSqlServer(connectionString);
         });
+
+        services.AddTransient<IRepository<Category>, CategoryRepository>();
 
         return services;
     }

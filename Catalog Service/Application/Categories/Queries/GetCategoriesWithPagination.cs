@@ -22,7 +22,7 @@ public class GetCategoriesWithPaginationQueryHandler(IRepository<Category> repos
         var page = await repository.List<string, CategoryDto>(
             c => c.ParentCategoryId == request.ParentCategoryId, 
             p => p.Name, 
-            mapper.ConfigurationProvider, 
+            mapper.ConfigurationProvider,
             new PagingOptions(request.PageNumber, request.PageSize));
 
         return page;

@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using OnlineShopping.CatalogService.Application;
 using OnlineShopping.CatalogService.Infrastructure;
 using OnlineShopping.CatalogService.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args); 
 
-//builder.Services.AddApplicationServices();
+builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
 // Add services to the container.

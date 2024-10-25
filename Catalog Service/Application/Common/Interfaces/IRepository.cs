@@ -4,15 +4,15 @@ using System.Linq.Expressions;
 
 namespace OnlineShopping.CatalogService.Application.Common.Interfaces;
 
-public interface IRepository<TEntety>
+public interface IRepository<TEntity>
 {
-    Task Add(TEntety entety);
+    Task AddAsync(TEntity entity);
     Task<PaginatedList<TDestination>> List<TOrderBy, TDestination>(
-        Expression<Func<TEntety, bool>>? predicate = null,
-        Expression<Func<TEntety, TOrderBy>>? orderBy = null,
+        Expression<Func<TEntity, bool>>? predicate = null,
+        Expression<Func<TEntity, TOrderBy>>? orderBy = null,
         IConfigurationProvider? configuration = null,
         PagingOptions? pagingOptions = null) where TDestination : class;
-    Task<TEntety> Get(int entetyId);
-    Task Update(TEntety entetyp);
-    Task Delete(TEntety entety);
+    Task<TEntity?> TryGetAsync(int id);
+    Task<bool> TryUpdateAsync(TEntity entity);
+    Task<bool> TryDeleteAsync(TEntity entity);
 }
