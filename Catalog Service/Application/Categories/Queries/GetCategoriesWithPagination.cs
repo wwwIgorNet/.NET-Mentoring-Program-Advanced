@@ -13,7 +13,7 @@ public record GetCategoriesWithPaginationQuery : IRequest<PaginatedList<Category
     public int PageSize { get; init; } = 10;
 }
 
-public class GetCategoriesWithPaginationQueryHandler(IRepository<Category> repository, IMapper mapper) 
+public class GetCategoriesWithPaginationQueryHandler(IReadOnlyRepository<Category> repository, IMapper mapper) 
     : IRequestHandler<GetCategoriesWithPaginationQuery, PaginatedList<CategoryDto>>
 {
 

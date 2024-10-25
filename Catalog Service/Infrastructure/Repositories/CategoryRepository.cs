@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using OnlineShopping.CatalogService.Application.Common.Interfaces;
 using OnlineShopping.CatalogService.Application.Common.Models;
 using OnlineShopping.CatalogService.Domain.Enteties;
 using OnlineShopping.CatalogService.Infrastructure.Data;
 
 namespace OnlineShopping.CatalogService.Infrastructure.Repositories
 {
-    internal class CategoryRepository : RepositoryBase<Category>
+    internal class CategoryRepository : ReadOnlyRepositoryBase<Category>, IRepository<Category>
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -19,13 +20,13 @@ namespace OnlineShopping.CatalogService.Infrastructure.Repositories
             _mapper = mapper;
         }
 
-        public override async Task AddAsync(Category entity)
+        public async Task AddAsync(Category entity)
         {
             await _dbContext.Categories.AddAsync(entity);
             await _dbContext.SaveChangesAsync();
         }
 
-        public override async Task<bool> TryDeleteAsync(Category entity)
+        public async Task<bool> TryDeleteAsync(Category entity)
         {
             var res = _dbContext.Categories.Remove(entity);
             await _dbContext.SaveChangesAsync();
@@ -38,7 +39,7 @@ namespace OnlineShopping.CatalogService.Infrastructure.Repositories
             return _dbContext.Categories.FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public override async Task<bool> TryUpdateAsync(Category entity)
+        public async Task<bool> TryUpdateAsync(Category entity)
         {
             var res = await _dbContext.Categories.FirstOrDefaultAsync(e => e.Id == entity.Id);
             if (res == null) { return false; }

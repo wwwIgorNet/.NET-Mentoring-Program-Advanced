@@ -8,7 +8,7 @@ namespace OnlineShopping.CatalogService.Application.Categories.Queries;
 
 public record GetCategoryCommand(int Id) : IRequest<CategoryDto>;
 
-public class GetCategoryCommandHandler(IRepository<Category> repository, IMapper mapper)
+public class GetCategoryCommandHandler(IReadOnlyRepository<Category> repository, IMapper mapper)
     : IRequestHandler<GetCategoryCommand, CategoryDto>
 {
     public async Task<CategoryDto> Handle(GetCategoryCommand request, CancellationToken cancellationToken)

@@ -6,11 +6,9 @@ using System.Linq.Expressions;
 
 namespace OnlineShopping.CatalogService.Application.Common.Models;
 
-public abstract class RepositoryBase<TEntity>(IQueryable<TEntity> source)
-    : IRepository<TEntity> where TEntity : BaseEntity
+public abstract class ReadOnlyRepositoryBase<TEntity>(IQueryable<TEntity> source)
+    : IReadOnlyRepository<TEntity> where TEntity : BaseEntity
 {
-    public abstract Task AddAsync(TEntity entity);
-
     public virtual async Task<PaginatedList<TDestination>> List<TOrderBy, TDestination>(
         Expression<Func<TEntity, bool>>? predicate = null,
         Expression<Func<TEntity, TOrderBy>>? orderBy = null,
@@ -44,9 +42,5 @@ public abstract class RepositoryBase<TEntity>(IQueryable<TEntity> source)
         return new PaginatedList<TDestination>(await Task.Run(targetResalt.ToList), count, pageNumber, pageSize);
     }
 
-    public abstract Task<bool> TryDeleteAsync(TEntity entity);
-
     public abstract Task<TEntity?> TryGetAsync(int id);
-
-    public abstract Task<bool> TryUpdateAsync(TEntity entity);
 }
