@@ -1,34 +1,30 @@
-﻿using LiteDB;
-using OnlineShopping.CartService.WebApi.DAL;
+﻿using OnlineShopping.CartService.WebApi.DAL;
 using OnlineShopping.CartService.WebApi.DAL.Entities;
 
 namespace OnlineShopping.CartService.WebApi.BLL
 {
     public class CartItemsService : ICartItemsService
     {
-        private readonly ILiteDatabase _liteDb;
+        private readonly ICartItemsRepository _repository;
 
-        public CartItemsService(ILiteDbContext liteDbContext)
+        public CartItemsService(ICartItemsRepository repository)
         {
-            _liteDb = liteDbContext.Database;
+            _repository = repository;
         }
 
         public IEnumerable<CartItem> FindItems(string cartId)
         {
-            return _liteDb.GetCollection<CartItem>("CartItems")
-                .Find(x => x.CartId == cartId);
+            return _repository.FindItems(cartId);
         }
 
         public int Insert(CartItem cartItem)
         {
-            return _liteDb.GetCollection<CartItem>("CartItems")
-                .Insert(cartItem).AsInt32;
+            return _repository.Insert(cartItem);
         }
 
         public bool Delete(int id)
         {
-            return _liteDb.GetCollection<CartItem>("CartItems")
-                .Delete(new BsonValue(id));
+            return _repository.Delete(id);
         }
     }
 }

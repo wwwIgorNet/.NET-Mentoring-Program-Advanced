@@ -46,7 +46,8 @@ namespace TestWebApi
             var mockLiteDbContext = new Mock<ILiteDbContext>();
             mockLiteDbContext.Setup(c => c.Database)
                 .Returns(mockLiteDatabase.Object);
-            var cartItemsService = new CartItemsService(mockLiteDbContext.Object);
+            var cardRepository = new CartItemsRepository(mockLiteDbContext.Object);
+            var cartItemsService = new CartItemsService(cardRepository);
 
             var controller = new CartItemsController(Mock.Of<ILogger<CartItemsController>>()
                 , cartItemsService

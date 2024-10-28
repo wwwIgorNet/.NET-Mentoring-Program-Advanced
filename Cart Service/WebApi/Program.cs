@@ -10,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<ILiteDbContext, LiteDbContext>();
+builder.Services.AddTransient<ICartItemsRepository, CartItemsRepository>();
 builder.Services.AddTransient<ICartItemsService, CartItemsService>();
 builder.Services.Configure<LiteDbOptions>(options => builder.Configuration.GetSection(nameof(LiteDbOptions)).Bind(options));
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
