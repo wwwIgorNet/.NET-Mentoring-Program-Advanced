@@ -11,7 +11,7 @@ public class ReadOnlyRepositoryBase<TEntity>
 {
     protected readonly IQueryable<TEntity> _source;
 
-    protected ReadOnlyRepositoryBase(IQueryable<TEntity> source)
+    public ReadOnlyRepositoryBase(IQueryable<TEntity> source)
     {
         _source = source;
     }
