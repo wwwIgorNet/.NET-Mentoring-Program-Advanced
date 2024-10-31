@@ -6,6 +6,7 @@ namespace OnlineShopping.CartService.WebApi.BLL
     {
         bool Delete(int id);
         IEnumerable<CartItem> FindItems(string cartId);
+        CartItem? FindItem(string cartId, int itemId);
         int Insert(CartItem cartItem);
     }
 }

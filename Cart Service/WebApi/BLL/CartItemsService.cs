@@ -17,6 +17,11 @@ namespace OnlineShopping.CartService.WebApi.BLL
             return _repository.FindItems(cartId);
         }
 
+        public CartItem? FindItem(string cartId, int itemId)
+        {
+            return _repository.FindItems(cartId).FirstOrDefault(i => i.Id == itemId);
+        }
+
         public int Insert(CartItem cartItem)
         {
             return _repository.Insert(cartItem);
