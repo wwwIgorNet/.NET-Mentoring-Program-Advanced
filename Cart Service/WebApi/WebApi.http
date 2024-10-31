@@ -1,0 +1,20 @@
+@WebApi_HostAddress = https://localhost:7159
+
+GET {{WebApi_HostAddress}}/Carts?cartId=someId
+Content-Type: application/json
+###
+
+PUT {{WebApi_HostAddress}}/Carts
+Content-Type: application/json
+{
+  "cartId": "someId",
+  "name": "product 2",
+  "image": "",
+  "price": 50,
+  "quantity": 3
+}
+###
+
+DELETE {{WebApi_HostAddress}}/Carts
+Content-Type: application/json
+ 4
