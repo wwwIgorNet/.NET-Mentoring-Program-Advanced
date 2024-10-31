@@ -14,15 +14,7 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
         builder.HasMany(c => c.Products)
             .WithOne(p => p.Category)
             .HasForeignKey(p => p.CategoryId)
-            //.HasPrincipalKey(c => c.Id)
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
-
-        //builder.HasMany(c => c.ChildCategories)
-        //        .WithOne(cc => cc.ParentCategory)
-        //        .HasForeignKey(cc => cc.ParentCategoryId)
-        //        .HasPrincipalKey(pc => pc.Id)
-        //        .IsRequired(false)
-        //        .OnDelete(DeleteBehavior.Cascade);
     }
 }

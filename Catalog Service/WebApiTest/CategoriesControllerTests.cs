@@ -6,7 +6,7 @@ using WebApi.Controllers;
 
 namespace WebApiTest;
 
-public class Tests
+public class CategoriesControllerTests
 {
     [Test]
     public void DeleiteMethdTest()
