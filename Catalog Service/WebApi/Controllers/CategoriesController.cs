@@ -6,43 +6,59 @@ using OnlineShopping.CatalogService.Application.Categories.Queries;
 namespace WebApi.Controllers;
 
 [ApiController]
-[Route("api/[controller]/[action]")]
-public class CategoriesController(ISender sender) 
+[Route("api/[controller]")]
+public class CategoriesController(ISender sender)
     : ControllerBase
 {
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> List([FromQuery] GetCategoriesWithPaginationQuery query)
     {
         return Ok(await sender.Send(query));
     }
 
-    [HttpGet]
-    public async Task<IActionResult> Get([FromQuery]GetCategoryCommand command)
+    [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Get([FromRoute] int id)
     {
-        return Ok(await sender.Send(command));
-    }
-
-
-    [HttpPut]
-    public async Task<IActionResult> Add(CreateCategoryCommand command)
-    {
-        return Ok(await sender.Send(command));
+        Response.Headers.Append("Allow", "GET,POST,PUT,DELETE");
+        return Ok(await sender.Send(new GetCategoryCommand(id)));
     }
 
 
     [HttpPost]
-    public async Task<IActionResult> Update(UpdateCategoryCommand command)
+    [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Add(CreateCategoryCommand command)
     {
-       await sender.Send(command);
+        var id = await sender.Send(command);
+        var dto = sender.Send(new GetCategoryCommand(id));
+        return CreatedAtAction(nameof(Get), new { id },dto);
+    }
+
+
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCategoryCommand command)
+    {
+        command.Id = id;
+        await sender.Send(command);
         return Ok();
     }
 
 
-    [HttpDelete]
-    public async Task<IActionResult> Delete(DeleteCategoryCommand command)
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Delete([FromRoute] int id)
     {
-        await sender.Send(command);
-
+        await sender.Send(new DeleteCategoryCommand(id));
         return Ok();
     }
 }

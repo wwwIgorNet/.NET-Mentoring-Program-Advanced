@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using OnlineShopping.CatalogService.Application;
 using OnlineShopping.CatalogService.Infrastructure;
 using OnlineShopping.CatalogService.Infrastructure.Data;
+using OnlineShopping.CatalogService.WebApi;
 
 var builder = WebApplication.CreateBuilder(args); 
 
@@ -26,6 +27,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 
