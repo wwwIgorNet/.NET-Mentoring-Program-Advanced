@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OnlineShopping.CatalogService.Application.Products.Commands;
 using OnlineShopping.CatalogService.Application.Products.Queries;
+using OnlineShopping.CatalogService.WebApi.Controllers.Models;
 
 namespace OnlineShopping.CatalogService.WebApi.Controllers;
 
@@ -25,7 +26,21 @@ public class ProductController(ISender sender)
     public async Task<IActionResult> Get([FromRoute] int id)
     {
         Response.Headers.Append("Allow", "GET,POST,PUT,DELETE");
-        return Ok(await sender.Send(new GetProductQuery(id)));
+
+        var product = await sender.Send(new GetProductQuery(id));
+
+        List<LinkInfo> links =
+        [
+            new LinkInfo(Url.Action(nameof(Get), new { id }), "self", "GET"),
+            new LinkInfo(Url.Action(nameof(Update), new { id }), "update_product", "PUT"),
+            new LinkInfo(Url.Action(nameof(Delete), new { id }), "delete_product", "DELETE")
+        ];
+
+        return Ok(new
+        {
+            Product = product,
+            Links = links
+        });
     }
 
 
@@ -35,7 +50,7 @@ public class ProductController(ISender sender)
     public async Task<IActionResult> Add(CreateProductCommand command)
     {
         var id = await sender.Send(command);
-        var dto = sender.Send(new GetProductQuery(id));
+        var dto = await sender.Send(new GetProductQuery(id));
         return CreatedAtAction(nameof(Get), new { id }, dto);
     }
 

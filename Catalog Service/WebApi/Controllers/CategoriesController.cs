@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShopping.CatalogService.Application.Categories.Commands;
 using OnlineShopping.CatalogService.Application.Categories.Queries;
+using OnlineShopping.CatalogService.WebApi.Controllers.Models;
 
 namespace WebApi.Controllers;
 
@@ -25,7 +26,19 @@ public class CategoriesController(ISender sender)
     public async Task<IActionResult> Get([FromRoute] int id)
     {
         Response.Headers.Append("Allow", "GET,POST,PUT,DELETE");
-        return Ok(await sender.Send(new GetCategoryCommand(id)));
+        var category = await sender.Send(new GetCategoryCommand(id));
+        List<LinkInfo> links =
+        [
+            new LinkInfo(Url.Action(nameof(Get), new { id }), "self", "GET"),
+            new LinkInfo(Url.Action(nameof(Update), new { id }), "update_category", "PUT"),
+            new LinkInfo(Url.Action(nameof(Delete), new { id }), "delete_category", "DELETE")
+        ];
+
+        return Ok(new
+        {
+            Category = category,
+            Links = links
+        });
     }
 
 
@@ -35,7 +48,7 @@ public class CategoriesController(ISender sender)
     public async Task<IActionResult> Add(CreateCategoryCommand command)
     {
         var id = await sender.Send(command);
-        var dto = sender.Send(new GetCategoryCommand(id));
+        var dto = await sender.Send(new GetCategoryCommand(id));
         return CreatedAtAction(nameof(Get), new { id },dto);
     }
 
