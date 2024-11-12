@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using OnlineShopping.CartService.WebApi.BLL;
 using OnlineShopping.CartService.WebApi.DAL.Entities;
 using OnlineShopping.CartService.WebApi.UI.Controllers.Dtos;
@@ -7,27 +8,72 @@ using OnlineShopping.CartService.WebApi.UI.Controllers.Dtos;
 namespace OnlineShopping.CartService.WebApi.UI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [ApiVersion("1.0", Deprecated = true)]
+    [ApiVersion("2.0")]
+    [Route("api/v{version:apiVersion}/carts")]
     public class CartItemsController(ILogger<CartItemsController> logger,
             ICartItemsService _cartItemsService,
             IMapper mapper) : ControllerBase
     {
-        [HttpGet]
-        public IEnumerable<CartItemDto> Get([FromQuery] string cartId)
+        [HttpGet("{cartId}/items")]
+        [MapToApiVersion("1.0")]
+        [ApiExplorerSettings(GroupName = "v1")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult GetItems([FromRoute, BindRequired] string cartId)
         {
-            return mapper.Map<IEnumerable<CartItemDto>>(_cartItemsService.FindItems(cartId));
+            var items = _cartItemsService.FindItems(cartId);
+            var itemsDto = mapper.Map<IEnumerable<CartItemDto>>(items);
+            return Ok(new { CartId = cartId, Items = itemsDto });
         }
 
-        [HttpPut]
-        public int Add([FromBody] AddCartItemDto cartItem)
+        [HttpGet("{cartId}/items")]
+        [MapToApiVersion("2.0")]
+        [ApiExplorerSettings(GroupName = "v2")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult GetItemsV2([FromRoute, BindRequired] string cartId)
         {
-            return _cartItemsService.Insert(mapper.Map<CartItem>(cartItem));
+            var items = _cartItemsService.FindItems(cartId);
+            var itemsDto = mapper.Map<IEnumerable<CartItemDto>>(items);
+            return Ok(itemsDto);
         }
 
-        [HttpDelete]
-        public bool Delete([FromBody] int cartItemId)
+        [HttpGet("{cartId}/items/{itemId}")]
+        [ProducesResponseType(typeof(CartItemDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult GetItem([FromRoute, BindRequired] string cartId, [FromRoute, BindRequired] int itemId)
         {
-            return _cartItemsService.Delete(cartItemId);
+            var item = _cartItemsService.FindItem(cartId, itemId);
+            if (item is null) 
+                return NotFound(); 
+
+            return Ok(mapper.Map<CartItemDto>(item));
+        }
+
+        [HttpPost("{cartId}/items")]
+        [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult Add([FromRoute, BindRequired] string cartId, [FromBody, BindRequired] AddCartItemDto cartItem)
+        {
+            var itemId = _cartItemsService.Insert(mapper.Map<CartItem>(cartItem));
+            var item = _cartItemsService.FindItem(cartId, itemId);
+            return CreatedAtAction(nameof(GetItem), new { cartId, itemId }, mapper.Map<CartItemDto>(item));
+        }
+
+        [HttpDelete("{cartid}/items/{itemId}")]
+        [ProducesResponseType(typeof(CartItemDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult Delete([FromRoute, BindRequired] string cartId, [FromRoute, BindRequired] int itemId)
+        {
+            var item = _cartItemsService.FindItem(cartId, itemId);
+            if (item is null)
+                return NotFound();
+
+            _cartItemsService.Delete(itemId);
+            return Ok();
         }
     }
 }

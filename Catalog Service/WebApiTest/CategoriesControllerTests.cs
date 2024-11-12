@@ -21,7 +21,7 @@ public class CategoriesControllerTests
         var controller = new CategoriesController(mockSender.Object);
 
         // Act
-        var result = controller.Get(new GetCategoryCommand(categoryId));
+        var result = controller.Get(categoryId);
 
         var dto = (result.Result as OkObjectResult)?.Value as CategoryDto;
         // Assert

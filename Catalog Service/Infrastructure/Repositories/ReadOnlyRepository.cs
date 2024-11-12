@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using OnlineShopping.CatalogService.Application.Common.Models;
+﻿using OnlineShopping.CatalogService.Application.Common.Models;
 using OnlineShopping.CatalogService.Domain.Common;
 using OnlineShopping.CatalogService.Infrastructure.Data;
 
@@ -10,7 +9,7 @@ internal class ReadOnlyRepository<TEntity>
     where TEntity : BaseEntity
 {
     public ReadOnlyRepository(ApplicationDbContext dbContext)
-        :base(dbContext.Set<TEntity>().AsNoTracking())
+        :base(dbContext.Set<TEntity>())
     {
         
     }
