@@ -1,7 +1,5 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-//var cache = builder.AddRedis("cache");
-
 var rabbitMQUserName = builder.AddParameter("RabbitMQUser", secret: true);
 var rabbitMQPassword = builder.AddParameter("RabbitMQPassword", secret: true);
 var rabbitmq = builder.AddRabbitMQ(name: "messaging", userName: rabbitMQUserName, password: rabbitMQPassword)
