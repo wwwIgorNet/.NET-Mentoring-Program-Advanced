@@ -10,11 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 // Add services to the container.
 builder.Services.AddProblemDetails();
-builder.AddRabbitMQClient(connectionName: "messaging");
 
 builder.Services.AddApplicationServices();
+builder.AddSqlServerDbContext<ApplicationDbContext>("CatalogServiceDb");
 builder.Services.AddInfrastructureServices(builder.Configuration);
-
 // Add services to the container.
 
 builder.Services.AddControllers();

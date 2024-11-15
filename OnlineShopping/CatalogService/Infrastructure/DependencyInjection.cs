@@ -17,11 +17,6 @@ public static class DependencyInjection
 
         Guard.Against.Null(connectionString, message: "Connection string 'DefaultConnection' not found.");
 
-        services.AddDbContext<ApplicationDbContext>((sp, options) =>
-        {
-            options.UseSqlServer(connectionString);
-        });
-
         services.AddTransient<IRepository<Category>, RepositoryBase<Category>>();
         services.AddTransient<IReadOnlyRepository<Category>, ReadOnlyRepository<Category>>();
 

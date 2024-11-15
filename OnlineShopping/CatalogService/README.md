@@ -2,9 +2,9 @@
 
 ** dotnet ef migrations
 
-dotnet ef migrations add InitCreate --project ./Infrastructure --startup-project ./WebApi -o Data/Migrations
+dotnet ef migrations add InitCreate --project ./CatalogService/Infrastructure --startup-project ./CatalogService/WebApi -o Data/Migrations
 
-dotnet ef database update --project ./Infrastructure --startup-project ./WebApi
+dotnet ef database update --project ./CatalogService/Infrastructure --startup-project ./CatalogService/WebApi -o Data/Migrations
 
 Extensibility:
 1. By maintaining a strict separation between the Entities, DAL, and BLL through physically distinct DLLs, you can easily modify or extend specific aspects of the application without impacting other layers. For example, changing the database implementation in the DAL won't affect the BLL as long as the repository interfaces remain consistent.
