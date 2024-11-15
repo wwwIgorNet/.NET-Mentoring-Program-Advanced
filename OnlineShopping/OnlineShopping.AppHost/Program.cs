@@ -4,13 +4,13 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 var rabbitMQUserName = builder.AddParameter("RabbitMQUser", secret: true);
 var rabbitMQPassword = builder.AddParameter("RabbitMQPassword", secret: true);
-var rabbitmq = builder.AddRabbitMQ("messaging", rabbitMQUserName, rabbitMQPassword)
-    .WithDataVolume(@"data-rabbitMQ", isReadOnly: false)
+var rabbitmq = builder.AddRabbitMQ(name: "messaging", userName: rabbitMQUserName, password: rabbitMQPassword)
+    .WithDataVolume(name: @"data-rabbitMQ", isReadOnly: false)
     .WithManagementPlugin();
 
 var sqlPassword = builder.AddParameter("MSSQLServerPassord", secret: true);
-var sqlServer = builder.AddSqlServer("mssql", sqlPassword)
-    .WithDataVolume("data-mssql", isReadOnly: false)
+var sqlServer = builder.AddSqlServer(name: "mssql", password: sqlPassword, port: 53531)
+    .WithDataVolume(name: "data-mssql", isReadOnly: false)
     .AddDatabase("CatalogServiceDb");
 
 var cartServiceApi = builder.AddProject<Projects.OnlineShopping_CartService_WebApi>("CartServiceApi")
