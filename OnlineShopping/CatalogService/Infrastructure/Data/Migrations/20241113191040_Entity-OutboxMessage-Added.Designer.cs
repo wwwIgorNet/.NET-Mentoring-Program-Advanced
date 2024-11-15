@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineShopping.CatalogService.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using OnlineShopping.CatalogService.Infrastructure.Data;
 namespace OnlineShopping.CatalogService.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241113191040_Entity-OutboxMessage-Added")]
+    partial class EntityOutboxMessageAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,33 +48,6 @@ namespace OnlineShopping.CatalogService.Infrastructure.Data.Migrations
                     b.HasIndex("ParentCategoryId");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("OnlineShopping.CatalogService.Domain.Enteties.OutboxMessage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTimeOffset?>("CompleteTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("CreationTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NewValue")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Property")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("OutboxMessages");
                 });
 
             modelBuilder.Entity("OnlineShopping.CatalogService.Domain.Enteties.Product", b =>
@@ -107,6 +83,37 @@ namespace OnlineShopping.CatalogService.Infrastructure.Data.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("OnlineShopping.CatalogService.Infrastructure.Data.Enteties.OutboxMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTimeOffset?>("CompleteTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("CreationTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Entity")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NewValue")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Property")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OutboxMessages");
                 });
 
             modelBuilder.Entity("OnlineShopping.CatalogService.Domain.Enteties.Category", b =>
