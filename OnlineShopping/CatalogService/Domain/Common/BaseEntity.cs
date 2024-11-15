@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
 
 namespace OnlineShopping.CatalogService.Domain.Common;
 
@@ -24,5 +25,18 @@ public class BaseEntity
     public void ClearDomainEvents()
     {
         _domainEvents.Clear();
+    }
+
+    protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+    {
+        var epce = typeof(EntityPropertyChangedEvent<>);
+        var selfType = GetType();
+        var property = selfType.GetProperty(propertyName)!;
+        var propertyValue = property.GetValue(this);
+
+        var makeme = epce.MakeGenericType([selfType]);
+        var @event = Activator.CreateInstance(makeme, [this, propertyName, propertyValue]) as BaseEvent;
+
+        AddDomainEvent(@event!);
     }
 }
