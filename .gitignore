@@ -480,3 +480,4 @@ $RECYCLE.BIN/
 *.swp
 .azure
 /OnlineShopping/RabbitMQ/Data
+/OnlineShopping/OutboxProcessing/local.settings.json

@@ -44,6 +44,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShopping.CatalogServi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShopping.CatalogService.WebApi", "CatalogService\WebApi\OnlineShopping.CatalogService.WebApi.csproj", "{90468E0B-D774-4F84-8C37-81F0F6142637}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShopping.CatalogService.OutboxProcessing", "OutboxProcessing\OnlineShopping.CatalogService.OutboxProcessing.csproj", "{07EF807A-362F-4FF5-BE5D-873949F3EA7E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -94,6 +96,10 @@ Global
 		{90468E0B-D774-4F84-8C37-81F0F6142637}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90468E0B-D774-4F84-8C37-81F0F6142637}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90468E0B-D774-4F84-8C37-81F0F6142637}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07EF807A-362F-4FF5-BE5D-873949F3EA7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07EF807A-362F-4FF5-BE5D-873949F3EA7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07EF807A-362F-4FF5-BE5D-873949F3EA7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07EF807A-362F-4FF5-BE5D-873949F3EA7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -110,6 +116,7 @@ Global
 		{922CD788-917B-422D-9213-797AB4F1736D} = {08982962-8367-4EA0-A02A-F3C6B7D45DB4}
 		{7A0866F5-E944-49F7-8845-EAAEB837D4C8} = {08982962-8367-4EA0-A02A-F3C6B7D45DB4}
 		{90468E0B-D774-4F84-8C37-81F0F6142637} = {93032F61-701C-4AE9-80A2-091E975B19B2}
+		{07EF807A-362F-4FF5-BE5D-873949F3EA7E} = {93032F61-701C-4AE9-80A2-091E975B19B2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B2C8A000-2130-4BFE-B44C-0EF5744D69F7}
