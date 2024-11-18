@@ -69,9 +69,12 @@ public class OutboxMessegesConsumerJob(
                 };
                 _cartItemsService.UpdateProperty(externalEntityId, propertyToUpdate, value);
             }
-        }catch(Exception ex)
+            args.Redelivered = true;
+        }
+        catch(Exception ex)
         {
-
+            args.Redelivered = false;
+            _logger.LogError(ex, "Error during processing message");
         }
     }
 }
