@@ -15,6 +15,7 @@ public class PropertyChangenEventHandler(IRepository<OutboxMessage> Repository)
 
         var @event = new OutboxMessage
         {
+            EntetyId = notification.Entity.Id,
             Property = $"{notification.Entity.GetType().Name}.{notification.Property}",
             NewValue = $"{notification.Value}",
             CreationTime = DateTimeOffset.UtcNow

@@ -35,7 +35,12 @@ namespace OutboxProcessing
 
             foreach (var message in await messages)
             {
-                var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(new { message.Property, message.NewValue }));
+                var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(new 
+                { 
+                    message.EntetyId, 
+                    message.Property, 
+                    message.NewValue 
+                }));
 
                 channel.BasicPublish(exchange: string.Empty, routingKey: "catalogEvents", body: body);
                 message.CompleteTime = DateTime.UtcNow;

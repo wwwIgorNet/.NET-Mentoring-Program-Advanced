@@ -1,16 +1,23 @@
-﻿using RabbitMQ.Client;
+﻿using OnlineShopping.CartService.WebApi.BLL;
+using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
+using System.Text.Json.Nodes;
 
 namespace OnlineShopping.CartService.WebApi;
 
-public class OutboxMessegesConsumerJob(ILogger<OutboxMessegesConsumerJob> logger, IServiceProvider serviceProvider, IConnection? messageConnection) : BackgroundService
+public class OutboxMessegesConsumerJob(
+    ILogger<OutboxMessegesConsumerJob> logger, 
+    IServiceProvider serviceProvider, 
+    IConnection? messageConnection,
+    ICartItemsService cartItemsService) : BackgroundService
 {
     private readonly ILogger<OutboxMessegesConsumerJob> _logger = logger;
     private readonly IServiceProvider _serviceProvider = serviceProvider;
     private IConnection? _messageConnection = messageConnection;
     private IModel? _messageChannel;
     private EventingBasicConsumer consumer;
+    private ICartItemsService _cartItemsService = cartItemsService;
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -42,10 +49,29 @@ public class OutboxMessegesConsumerJob(ILogger<OutboxMessegesConsumerJob> logger
 
     private void ProcessMessageAsync(object? sender, BasicDeliverEventArgs args)
     {
+        string messageJson = Encoding.UTF8.GetString(args.Body.ToArray());
+        _logger.LogInformation($"Retrieved changes from the catalog {messageJson}");
 
-        string messagetext = Encoding.UTF8.GetString(args.Body.ToArray());
-        _logger.LogInformation("All products retrieved from the catalog at {now}. Message Text: {text}", DateTime.Now, messagetext);
+        try
+        {
+            var json = JsonNode.Parse(messageJson);
+            var externalEntityId = json["EntetyId"].GetValue<int>();
+            var property = json["Property"].GetValue<string>();
+            var value = json["NewValue"].GetValue<string>();
 
-        var message = args.Body;
+            if (property.StartsWith("Product."))
+            {
+                var productProperty = property.Replace("Product.", "");
+                var propertyToUpdate = productProperty switch
+                {
+                    "Url" => "Image",
+                    _ => productProperty
+                };
+                _cartItemsService.UpdateProperty(externalEntityId, propertyToUpdate, value);
+            }
+        }catch(Exception ex)
+        {
+
+        }
     }
 }

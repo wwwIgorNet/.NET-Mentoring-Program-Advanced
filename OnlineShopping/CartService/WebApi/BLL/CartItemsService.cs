@@ -31,5 +31,25 @@ namespace OnlineShopping.CartService.WebApi.BLL
         {
             return _repository.Delete(id);
         }
+
+        public void UpdateProperty(int externalEntityId, string propertyName, string newValue)
+        {
+            var cartItems = _repository.GetByEntetyId(externalEntityId);
+            foreach (var cartItem in cartItems) {
+                switch (propertyName)
+                {
+                    case "Name":
+                        cartItem.Name = newValue;
+                        break;
+                    case "Image":
+                        cartItem.Image = newValue;
+                        break;
+                    case "Price":
+                        cartItem.Price = int.Parse(newValue);
+                        break;
+                }
+                _repository.Update(cartItem);
+            }
+        }
     }
 }
