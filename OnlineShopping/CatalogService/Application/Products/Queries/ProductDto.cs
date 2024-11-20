@@ -18,7 +18,9 @@ public class ProductDto
         public Mapping()
         {
             CreateMap<Product, ProductDto>();
-            CreateMap<Product, Product>();
+            CreateMap<Product, Product>()
+                .ForMember(m => m.Id, options => options.Ignore())
+                .ForMember(m => m.DomainEvents, options => options.Ignore());
         }
     }
 }

@@ -12,27 +12,27 @@ public class RepositoryBase<TEntity>
     where TEntity : BaseEntity
 {
     private readonly DbSet<TEntity> _entities;
-    private readonly ApplicationDbContext _dbContext;
     private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public RepositoryBase(ApplicationDbContext dbContext, IMapper mapper)
+    public RepositoryBase(ApplicationDbContext dbContext, IMapper mapper, IUnitOfWork unitOfWork)
         : base(dbContext.Set<TEntity>())
     {
         _entities = dbContext.Set<TEntity>();
-        _dbContext = dbContext;
         _mapper = mapper;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task AddAsync(TEntity entity)
     {
         await _entities.AddAsync(entity);
-        await _dbContext.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
     }
 
     public async Task<bool> TryDeleteAsync(TEntity entity)
     {
         var res = _entities.Remove(entity);
-        await _dbContext.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
 
         return true;
     }
@@ -43,7 +43,7 @@ public class RepositoryBase<TEntity>
         if (res == null) { return false; }
 
         _mapper.Map(entity, res);
-        await _dbContext.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
         return true;
 
     }
