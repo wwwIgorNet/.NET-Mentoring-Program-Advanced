@@ -12,8 +12,8 @@ builder.AddServiceDefaults();
 builder.Services.AddProblemDetails();
 
 builder.Services.AddApplicationServices();
+builder.AddSqlServerDbContext<ApplicationDbContext>("CatalogServiceDb");
 builder.Services.AddInfrastructureServices(builder.Configuration);
-
 // Add services to the container.
 
 builder.Services.AddControllers();

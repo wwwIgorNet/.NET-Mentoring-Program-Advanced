@@ -11,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 // Add services to the container.
 builder.Services.AddProblemDetails();
+builder.AddRabbitMQClient(connectionName: "messaging");
+builder.Services.AddHostedService<OutboxMessegesConsumerJob>();
 
 // Add services to the container.
 builder.Services.AddControllers();

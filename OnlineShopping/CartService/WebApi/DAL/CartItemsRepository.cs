@@ -24,9 +24,21 @@ public class CartItemsRepository : ICartItemsRepository
             .Insert(cartItem).AsInt32;
     }
 
+    public bool Update(CartItem cartItem)
+    {
+        return _liteDb.GetCollection<CartItem>("CartItems")
+            .Update(cartItem);
+    }
+
     public bool Delete(int id)
     {
         return _liteDb.GetCollection<CartItem>("CartItems")
             .Delete(new BsonValue(id));
+    }
+
+    public IEnumerable<CartItem> GetByEntetyId(int externalEntityId) 
+    { 
+        return _liteDb.GetCollection<CartItem>("CartItems")
+            .Find(x => x.ExternalEntityId == externalEntityId);
     }
 }
