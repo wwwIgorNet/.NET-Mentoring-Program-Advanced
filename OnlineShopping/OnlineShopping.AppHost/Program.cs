@@ -17,7 +17,8 @@ var keycloakUser = builder.AddParameter("KeycloakUser");
 var keycloakPassword = builder.AddParameter("KeycloakPassword", secret: true);
 var keycloak = builder.AddKeycloak("keycloak", 8080, keycloakUser, keycloakPassword)
     .WithDataVolume(name: "data-keycloak")
-    .WithLifetime(ContainerLifetime.Persistent);
+    .WithLifetime(ContainerLifetime.Persistent)
+    .WithExternalHttpEndpoints();
 
 var cartServiceApi = builder.AddProject<Projects.OnlineShopping_CartService_WebApi>("CartServiceApi")
     .WithReference(rabbitmq)

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShopping.CatalogService.Application.Products.Commands;
 using OnlineShopping.CatalogService.Application.Products.Queries;
@@ -8,6 +9,7 @@ namespace OnlineShopping.CatalogService.WebApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class ProductController(ISender sender) 
     : ControllerBase
 {

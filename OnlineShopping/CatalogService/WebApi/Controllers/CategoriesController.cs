@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShopping.CatalogService.Application.Categories.Commands;
 using OnlineShopping.CatalogService.Application.Categories.Queries;
@@ -8,6 +9,7 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class CategoriesController(ISender sender)
     : ControllerBase
 {
