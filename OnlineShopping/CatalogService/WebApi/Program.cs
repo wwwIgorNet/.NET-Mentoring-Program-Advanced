@@ -35,7 +35,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1");
-        options.OAuthClientId("online-shopping-api-client");
+        options.OAuthClientId(builder.Configuration["Keycloak:ClientID"]);
     });
 }
 

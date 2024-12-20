@@ -1,10 +1,10 @@
 ﻿using Microsoft.OpenApi.Models;
 
-namespace OnlineShopping.CatalogService.WebApi.Configurations;
+namespace OnlineShopping.CartService.WebApi.UI.Configurations;
 
 internal static class SwaggerGenServiceCollectionExtensions
 {
-    internal static IServiceCollection UseSwaggerGenWithAuth(this IServiceCollection services,
+    internal static IServiceCollection UseSwagger(this IServiceCollection services,
         IConfiguration configuration)
     {
         services.AddSwaggerGen(options =>
@@ -12,9 +12,17 @@ internal static class SwaggerGenServiceCollectionExtensions
             options.SwaggerDoc(
                 "v1", 
                 new OpenApiInfo 
-                {
-                        Title = "CatalogService API", 
-                        Version = "v1",
+                { 
+                    Title = "Carts API - V1", 
+                    Version = "v1"
+                });
+
+            options.SwaggerDoc(
+                "v2",
+                new OpenApiInfo 
+                { 
+                    Title = "Carts API - V2", 
+                    Version = "v2"
                 });
 
             options.AddSecurityDefinition("Keycloak", new OpenApiSecurityScheme
@@ -26,31 +34,31 @@ internal static class SwaggerGenServiceCollectionExtensions
                     {
                         AuthorizationUrl = new Uri(configuration["Keycloak:AuthorizationUrl"]!),
                         Scopes = new Dictionary<string, string>
-                        {
-                            { "openid", "openid" },
-                            { "profile", "profile" }
-                        }
+                    {
+                        { "openid", "openid" },
+                        { "profile", "profile" }
+                    }
                     }
                 }
             });
 
             options.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
             {
+                new OpenApiSecurityScheme()
                 {
-                    new OpenApiSecurityScheme()
+                    Reference = new OpenApiReference
                     {
-                        Reference = new OpenApiReference
-                        {
-                            Id = "Keycloak",
-                            Type = ReferenceType.SecurityScheme,
-                        },
-                        In = ParameterLocation.Header,
-                        Name = "Bearer",
-                        Scheme = "Bearer",
+                        Id = "Keycloak",
+                        Type = ReferenceType.SecurityScheme,
                     },
-                    Array.Empty<string>() 
+                    In = ParameterLocation.Header,
+                    Name = "Bearer",
+                    Scheme = "Bearer",
                 },
-            });
+                Array.Empty<string>()
+            },
+        });
         });
 
         return services;
