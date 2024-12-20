@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
+using OnlineShopping.CatalogService.Domain.Constants;
 
 namespace OnlineShopping.CatalogService.WebApi.Configurations;
 
@@ -31,12 +32,16 @@ public static class AuthenticationConfigurations
 
     public static IServiceCollection UseAuthorization(this IServiceCollection services)
     {
-        services.AddAuthorization(o =>
+        services.AddAuthorization(options =>
         {
-            o.DefaultPolicy = new AuthorizationPolicyBuilder()
+            options.DefaultPolicy = new AuthorizationPolicyBuilder()
                 .RequireAuthenticatedUser()
                 .RequireClaim("email_verified", "true")
                 .Build();
+            options.AddPolicy(Policies.Read, policy => policy.RequireRole(Roles.Manager, Roles.StoreCustomer));
+            options.AddPolicy(Policies.Edit, policy => policy.RequireRole(Roles.Manager));
+            options.AddPolicy(Policies.Delete, policy => policy.RequireRole(Roles.Manager));
+            options.AddPolicy(Policies.Create, policy => policy.RequireRole(Roles.Manager));
         });
 
         return services;

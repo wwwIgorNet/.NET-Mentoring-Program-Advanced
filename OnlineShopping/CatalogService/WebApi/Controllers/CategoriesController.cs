@@ -3,19 +3,20 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShopping.CatalogService.Application.Categories.Commands;
 using OnlineShopping.CatalogService.Application.Categories.Queries;
+using OnlineShopping.CatalogService.Domain.Constants;
 using OnlineShopping.CatalogService.WebApi.Controllers.Models;
 
 namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
 public class CategoriesController(ISender sender)
     : ControllerBase
 {
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Authorize(Policy = Policies.Read)]
     public async Task<IActionResult> List([FromQuery] GetCategoriesWithPaginationQuery query)
     {
         return Ok(await sender.Send(query));
@@ -25,6 +26,7 @@ public class CategoriesController(ISender sender)
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Authorize(Policy = Policies.Read)]
     public async Task<IActionResult> Get([FromRoute] int id)
     {
         Response.Headers.Append("Allow", "GET,POST,PUT,DELETE");
@@ -47,6 +49,7 @@ public class CategoriesController(ISender sender)
     [HttpPost]
     [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Authorize(Policy = Policies.Create)]
     public async Task<IActionResult> Add(CreateCategoryCommand command)
     {
         var id = await sender.Send(command);
@@ -59,6 +62,7 @@ public class CategoriesController(ISender sender)
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Authorize(Policy = Policies.Edit)]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCategoryCommand command)
     {
         command.Id = id;
@@ -71,6 +75,7 @@ public class CategoriesController(ISender sender)
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Authorize(Policy = Policies.Delete)]
     public async Task<IActionResult> Delete([FromRoute] int id)
     {
         await sender.Send(new DeleteCategoryCommand(id));

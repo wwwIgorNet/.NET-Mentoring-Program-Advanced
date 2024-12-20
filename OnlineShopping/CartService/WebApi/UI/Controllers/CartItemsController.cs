@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using OnlineShopping.CartService.WebApi.BLL;
+using OnlineShopping.CartService.WebApi.BLL.Constants;
 using OnlineShopping.CartService.WebApi.DAL.Entities;
 using OnlineShopping.CartService.WebApi.UI.Controllers.Dtos;
 
@@ -12,7 +13,7 @@ namespace OnlineShopping.CartService.WebApi.UI.Controllers
     [ApiVersion("1.0", Deprecated = true)]
     [ApiVersion("2.0")]
     [Route("api/v{version:apiVersion}/carts")]
-    [Authorize]
+    [Authorize(Policy = Policies.CRUD)]
     public class CartItemsController(ILogger<CartItemsController> logger,
             ICartItemsService _cartItemsService,
             IMapper mapper) : ControllerBase
