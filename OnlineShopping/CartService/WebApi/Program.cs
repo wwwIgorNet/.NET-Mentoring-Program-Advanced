@@ -37,6 +37,11 @@ builder.Services.AddApiVersioning(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.UseSwagger(builder.Configuration);
 
+builder.Services.UseAuthorization();
+builder.Services.UseAuthentication(builder.Configuration);
+
+builder.Services.AddAuthorizationBuilder();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -52,6 +57,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
