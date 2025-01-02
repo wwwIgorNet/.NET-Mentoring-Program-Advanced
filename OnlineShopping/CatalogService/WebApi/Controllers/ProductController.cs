@@ -1,7 +1,9 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShopping.CatalogService.Application.Products.Commands;
 using OnlineShopping.CatalogService.Application.Products.Queries;
+using OnlineShopping.CatalogService.Domain.Constants;
 using OnlineShopping.CatalogService.WebApi.Controllers.Models;
 
 namespace OnlineShopping.CatalogService.WebApi.Controllers;
@@ -14,6 +16,7 @@ public class ProductController(ISender sender)
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Authorize(Policy = Policies.Read)]
     public async Task<IActionResult> List([FromQuery] GetProductsWithPaginationQuery query)
     {
         return Ok(await sender.Send(query));
@@ -23,6 +26,7 @@ public class ProductController(ISender sender)
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Authorize(Policy = Policies.Read)]
     public async Task<IActionResult> Get([FromRoute] int id)
     {
         Response.Headers.Append("Allow", "GET,POST,PUT,DELETE");
@@ -47,6 +51,7 @@ public class ProductController(ISender sender)
     [HttpPost]
     [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Authorize(Policy = Policies.Create)]
     public async Task<IActionResult> Add(CreateProductCommand command)
     {
         var id = await sender.Send(command);
@@ -59,6 +64,7 @@ public class ProductController(ISender sender)
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Authorize(Policy = Policies.Edit)]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateProductCommand command)
     {
         command.Id = id;
@@ -71,6 +77,7 @@ public class ProductController(ISender sender)
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Authorize(Policy = Policies.Delete)]
     public async Task<IActionResult> Delete(DeleteProductCommand command)
     {
         await sender.Send(command);

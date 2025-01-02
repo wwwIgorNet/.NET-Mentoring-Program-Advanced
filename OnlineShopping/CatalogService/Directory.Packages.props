@@ -10,6 +10,7 @@
     <PackageVersion Include="AutoMapper" Version="13.0.1" />
     <PackageVersion Include="MediatR" Version="12.4.1" />
     <PackageVersion Include="Ardalis.GuardClauses" Version="5.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.0" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.0" />
@@ -22,5 +23,6 @@
     <PackageVersion Include="NUnit" Version="3.14.0" />
     <PackageVersion Include="NUnit.Analyzers" Version="3.9.0" />
     <PackageVersion Include="NUnit3TestAdapter" Version="4.5.0" />
+    <PackageVersion Include="Aspire.Keycloak.Authentication" Version="9.0.0-preview.5.24551.3" />
   </ItemGroup>
 </Project>
