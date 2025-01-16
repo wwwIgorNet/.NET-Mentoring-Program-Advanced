@@ -17,7 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0F8B4465-C35
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestWebApi", "Cart Service\TestWebApi\TestWebApi.csproj", "{A383D9AE-4338-4145-A3E3-331B89468494}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "Cart Service\WebApi\WebApi.csproj", "{C93596BA-ED3C-49FB-A210-2132C0397006}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CartWebApi", "Cart Service\WebApi\CartWebApi.csproj", "{C93596BA-ED3C-49FB-A210-2132C0397006}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiTest", "Catalog Service\WebApiTest\WebApiTest.csproj", "{D0806E76-664D-4ADA-8624-464D73250515}"
 EndProject
@@ -29,11 +29,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Catalog Service\D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Catalog Service\Infrastructure\Infrastructure.csproj", "{4D60CBD1-28FF-42D5-B925-2B20E4E1FDC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "Catalog Service\WebApi\WebApi.csproj", "{39C77997-285D-4B7A-8459-A2BE52A90951}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogWebApi", "Catalog Service\WebApi\CatalogWebApi.csproj", "{39C77997-285D-4B7A-8459-A2BE52A90951}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationTests", "Catalog Service\ApplicationTests\ApplicationTests.csproj", "{F7613F5A-E628-4D77-A040-9473CB1C543F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfrastructureTest", "Catalog Service\InfrastructureTest\InfrastructureTest.csproj", "{7BBBEC77-6E33-4A18-AE83-58F912DD3A67}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{F70437ED-49D3-4530-8EA9-04686E34B114}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{7BBBEC77-6E33-4A18-AE83-58F912DD3A67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BBBEC77-6E33-4A18-AE83-58F912DD3A67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7BBBEC77-6E33-4A18-AE83-58F912DD3A67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F70437ED-49D3-4530-8EA9-04686E34B114}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F70437ED-49D3-4530-8EA9-04686E34B114}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F70437ED-49D3-4530-8EA9-04686E34B114}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F70437ED-49D3-4530-8EA9-04686E34B114}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
