@@ -35,7 +35,7 @@ public class CategoriesControllerTests
         controller.Url = mockUrlHelper.Object;
 
         // Act
-        var result = await controller.Get(categoryId) as OkObjectResult;
+        var result = await controller.GetAsync(categoryId) as OkObjectResult;
 
         // Assert
         Assert.IsNotNull(result);

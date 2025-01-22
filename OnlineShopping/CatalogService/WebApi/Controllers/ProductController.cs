@@ -17,7 +17,7 @@ public class ProductController(ISender sender)
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [Authorize(Policy = Policies.Read)]
-    public async Task<IActionResult> List([FromQuery] GetProductsWithPaginationQuery query)
+    public async Task<IActionResult> ListAsync([FromQuery] GetProductsWithPaginationQuery query)
     {
         return Ok(await sender.Send(query));
     }
@@ -27,7 +27,7 @@ public class ProductController(ISender sender)
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [Authorize(Policy = Policies.Read)]
-    public async Task<IActionResult> Get([FromRoute] int id)
+    public async Task<IActionResult> GetAsync([FromRoute] int id)
     {
         Response.Headers.Append("Allow", "GET,POST,PUT,DELETE");
 
@@ -35,9 +35,9 @@ public class ProductController(ISender sender)
 
         List<LinkInfo> links =
         [
-            new LinkInfo(Url.Action(nameof(Get), new { id }), "self", "GET"),
-            new LinkInfo(Url.Action(nameof(Update), new { id }), "update_product", "PUT"),
-            new LinkInfo(Url.Action(nameof(Delete), new { id }), "delete_product", "DELETE")
+            new LinkInfo(Url.Action(nameof(GetAsync), new { id }), "self", "GET"),
+            new LinkInfo(Url.Action(nameof(UpdateAsync), new { id }), "update_product", "PUT"),
+            new LinkInfo(Url.Action(nameof(DeleteAsync), new { id }), "delete_product", "DELETE")
         ];
 
         return Ok(new
@@ -52,11 +52,11 @@ public class ProductController(ISender sender)
     [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [Authorize(Policy = Policies.Create)]
-    public async Task<IActionResult> Add(CreateProductCommand command)
+    public async Task<IActionResult> AddAsync(CreateProductCommand command)
     {
         var id = await sender.Send(command);
         var dto = await sender.Send(new GetProductQuery(id));
-        return CreatedAtAction(nameof(Get), new { id }, dto);
+        return CreatedAtAction(nameof(GetAsync), new { id }, dto);
     }
 
 
@@ -65,7 +65,7 @@ public class ProductController(ISender sender)
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [Authorize(Policy = Policies.Edit)]
-    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateProductCommand command)
+    public async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] UpdateProductCommand command)
     {
         command.Id = id;
         await sender.Send(command);
@@ -78,7 +78,7 @@ public class ProductController(ISender sender)
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [Authorize(Policy = Policies.Delete)]
-    public async Task<IActionResult> Delete(DeleteProductCommand command)
+    public async Task<IActionResult> DeleteAsync(DeleteProductCommand command)
     {
         await sender.Send(command);
 
