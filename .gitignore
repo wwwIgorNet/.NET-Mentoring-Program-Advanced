@@ -481,3 +481,4 @@ $RECYCLE.BIN/
 .azure
 /OnlineShopping/RabbitMQ/Data
 /OnlineShopping/OutboxProcessing/local.settings.json
+/OnlineShopping/.sonarqube
