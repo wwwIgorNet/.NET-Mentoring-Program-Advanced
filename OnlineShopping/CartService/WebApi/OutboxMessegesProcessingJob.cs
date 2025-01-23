@@ -1,23 +1,21 @@
-﻿using OnlineShopping.CartService.WebApi.BLL;
+﻿using System.Text;
+using System.Text.Json.Nodes;
+using OnlineShopping.CartService.WebApi.BLL;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using System.Text;
-using System.Text.Json.Nodes;
 
 namespace OnlineShopping.CartService.WebApi;
 
 public class OutboxMessegesConsumerJob(
     ILogger<OutboxMessegesConsumerJob> logger, 
-    IServiceProvider serviceProvider, 
-    IConnection? messageConnection,
+    IConnection messageConnection,
     ICartItemsService cartItemsService) : BackgroundService
 {
     private readonly ILogger<OutboxMessegesConsumerJob> _logger = logger;
-    private readonly IServiceProvider _serviceProvider = serviceProvider;
-    private IConnection? _messageConnection = messageConnection;
+    private readonly IConnection _messageConnection = messageConnection;
     private IModel? _messageChannel;
-    private EventingBasicConsumer consumer;
-    private ICartItemsService _cartItemsService = cartItemsService;
+    private EventingBasicConsumer? consumer;
+    private readonly ICartItemsService _cartItemsService = cartItemsService;
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -43,14 +41,16 @@ public class OutboxMessegesConsumerJob(
     public override async Task StopAsync(CancellationToken cancellationToken)
     {
         await base.StopAsync(cancellationToken);
-        consumer.Received -= ProcessMessageAsync;
+        if (consumer != null)
+            consumer.Received -= ProcessMessageAsync;
+
         _messageChannel?.Dispose();
     }
 
     private void ProcessMessageAsync(object? sender, BasicDeliverEventArgs args)
     {
         string messageJson = Encoding.UTF8.GetString(args.Body.ToArray());
-        _logger.LogInformation($"Retrieved changes from the catalog {messageJson}");
+        _logger.LogInformation("Retrieved changes from the catalog {0}", messageJson);
 
         try
         {
