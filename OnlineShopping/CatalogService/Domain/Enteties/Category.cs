@@ -8,7 +8,7 @@ public class Category : BaseEntity
     public string? Image { get; set; }
     public int? ParentCategoryId { get; set; }
     public Category? ParentCategory { get; set; }
-    public IEnumerable<Category> ChildCategories { get; set; }
-    public IEnumerable<Product> Products { get; set; }
+    public IEnumerable<Category>? ChildCategories { get; set; }
+    public IEnumerable<Product>? Products { get; set; }
 }
 

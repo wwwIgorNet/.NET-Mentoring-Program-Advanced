@@ -1,13 +1,12 @@
-﻿using AutoMapper;
+﻿using System.Linq.Expressions;
+using AutoMapper;
 using LiteDB;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Moq;
 using OnlineShopping.CartService.WebApi.BLL;
 using OnlineShopping.CartService.WebApi.DAL;
 using OnlineShopping.CartService.WebApi.DAL.Entities;
 using OnlineShopping.CartService.WebApi.UI.Controllers;
-using System.Linq.Expressions;
 
 namespace TestWebApi
 {
@@ -26,8 +25,7 @@ namespace TestWebApi
             mockCartItemsService.Setup(service => service.FindItem(It.IsAny<string>(), It.IsAny<int>()))
                 .Returns(new CartItem { Id = cartItemId, CartId = cartId, Name ="Test", Price = 33 });
 
-            var controller = new CartItemsController(Mock.Of<ILogger<CartItemsController>>()
-                , mockCartItemsService.Object
+            var controller = new CartItemsController(mockCartItemsService.Object
                 , Mock.Of<IMapper>());
 
             // Act
@@ -61,8 +59,7 @@ namespace TestWebApi
             var cardRepository = new CartItemsRepository(mockLiteDbContext.Object);
             var cartItemsService = new CartItemsService(cardRepository);
 
-            var controller = new CartItemsController(Mock.Of<ILogger<CartItemsController>>()
-                , cartItemsService
+            var controller = new CartItemsController(cartItemsService
                 , Mock.Of<IMapper>());
 
             // Act

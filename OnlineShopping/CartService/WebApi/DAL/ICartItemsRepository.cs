@@ -10,5 +10,5 @@ public interface ICartItemsRepository
     bool Update(CartItem cartItem);
 
     bool Delete(int id);
-    IEnumerable<CartItem> GetByEntetyId(int entetyId);
+    IEnumerable<CartItem> GetByEntetyId(int externalEntityId);
 }

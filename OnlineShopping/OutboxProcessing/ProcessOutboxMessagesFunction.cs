@@ -1,10 +1,10 @@
+using System.Text;
+using System.Text.Json;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using OnlineShopping.CatalogService.Infrastructure.Data;
 using RabbitMQ.Client;
-using System.Text;
-using System.Text.Json;
 
 namespace OutboxProcessing
 {
@@ -18,7 +18,7 @@ namespace OutboxProcessing
         private readonly IConnection _queueConnection = queueConnection;
 
         [Function("ProcessOutboxMessagesFunction")]
-        public async Task Run([TimerTrigger("0 */1 * * * *")] TimerInfo myTimer)
+        public async Task RunAsync([TimerTrigger("0 */1 * * * *")] TimerInfo myTimer)
         {
             _logger.LogInformation($"Timer trigger function executed at: {DateTime.Now}");
 

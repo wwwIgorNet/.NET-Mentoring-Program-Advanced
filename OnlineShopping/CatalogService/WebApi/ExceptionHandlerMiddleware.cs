@@ -17,7 +17,7 @@ public class ExceptionHandlerMiddleware
         {
             await _next(context);
         }
-        catch (NotFoundException exception)
+        catch (NotFoundException)
         {
             var response = context.Response;
             response.ContentType = "application/json";

@@ -16,4 +16,4 @@ builder.AddRabbitMQClient(connectionName: "messaging");
 //     .AddApplicationInsightsTelemetryWorkerService()
 //     .ConfigureFunctionsApplicationInsights();
 
-builder.Build().Run();
+await builder.Build().RunAsync();

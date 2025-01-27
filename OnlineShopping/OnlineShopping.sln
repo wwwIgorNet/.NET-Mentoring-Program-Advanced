@@ -8,7 +8,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShopping.ServiceDefau
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{29CA7B1B-5790-48FF-BBE6-63A340D51CAF}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		.gitignore = .gitignore
+		docker-compose.yml = docker-compose.yml
+		Readme.md = Readme.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CartService", "CartService", "{9C7F7CC9-0D23-4B88-A0DF-EC6AB3F52CA6}"

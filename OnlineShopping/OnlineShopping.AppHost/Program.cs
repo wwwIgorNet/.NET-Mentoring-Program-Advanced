@@ -38,5 +38,5 @@ builder.AddAzureFunctionsProject<Projects.OnlineShopping_CatalogService_OutboxPr
     .WaitFor(rabbitmq)
     .WaitFor(sqlServer);
 
-builder.Build().Run();
+await builder.Build().RunAsync();
  
