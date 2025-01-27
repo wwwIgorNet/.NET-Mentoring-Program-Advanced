@@ -10,12 +10,12 @@ namespace OnlineShopping.CatalogService.WebApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 public class ProductController(ISender sender) 
     : ControllerBase
 {
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [Authorize(Policy = Policies.Read)]
     public async Task<IActionResult> ListAsync([FromQuery] GetProductsWithPaginationQuery query)
     {
@@ -25,7 +25,6 @@ public class ProductController(ISender sender)
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [Authorize(Policy = Policies.Read)]
     public async Task<IActionResult> GetAsync([FromRoute] int id)
     {
@@ -50,7 +49,6 @@ public class ProductController(ISender sender)
 
     [HttpPost]
     [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [Authorize(Policy = Policies.Create)]
     public async Task<IActionResult> AddAsync(CreateProductCommand command)
     {
@@ -63,7 +61,6 @@ public class ProductController(ISender sender)
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [Authorize(Policy = Policies.Edit)]
     public async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] UpdateProductCommand command)
     {
@@ -76,7 +73,6 @@ public class ProductController(ISender sender)
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [Authorize(Policy = Policies.Delete)]
     public async Task<IActionResult> DeleteAsync(DeleteProductCommand command)
     {

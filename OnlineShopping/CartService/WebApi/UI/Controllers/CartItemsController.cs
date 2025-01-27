@@ -14,6 +14,7 @@ namespace OnlineShopping.CartService.WebApi.UI.Controllers;
 [ApiVersion("2.0")]
 [Route("api/v{version:apiVersion}/carts")]
 [Authorize(Policy = Policies.CRUD)]
+[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 public class CartItemsController(
         ICartItemsService _cartItemsService,
         IMapper mapper) : ControllerBase
@@ -22,7 +23,6 @@ public class CartItemsController(
     [MapToApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "v1")]
     [ProducesResponseType<int>(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetItems([FromRoute, BindRequired] string cartId)
     {
         var items = _cartItemsService.FindItems(cartId);
@@ -34,7 +34,6 @@ public class CartItemsController(
     [MapToApiVersion("2.0")]
     [ApiExplorerSettings(GroupName = "v2")]
     [ProducesResponseType<int>(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetItemsV2([FromRoute, BindRequired] string cartId)
     {
         var items = _cartItemsService.FindItems(cartId);
@@ -45,7 +44,6 @@ public class CartItemsController(
     [HttpGet("{cartId}/items/{itemId}")]
     [ProducesResponseType<CartItemDto>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult GetItem([FromRoute, BindRequired] string cartId, [FromRoute, BindRequired] int itemId)
     {
         var item = _cartItemsService.FindItem(cartId, itemId);
@@ -56,9 +54,8 @@ public class CartItemsController(
     }
 
     [HttpPost("{cartId}/items")]
-    [ProducesResponseType<int>(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult Add([FromRoute, BindRequired] string cartId, [FromBody, BindRequired] AddCartItemDto cartItem)
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    public ActionResult<int> Add([FromRoute, BindRequired] string cartId, [FromBody, BindRequired] AddCartItemDto cartItem)
     {
         var itemId = _cartItemsService.Insert(mapper.Map<CartItem>(cartItem));
         var item = _cartItemsService.FindItem(cartId, itemId);
@@ -68,7 +65,6 @@ public class CartItemsController(
     [HttpDelete("{cartid}/items/{itemId}")]
     [ProducesResponseType<CartItemDto>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Delete([FromRoute, BindRequired] string cartId, [FromRoute, BindRequired] int itemId)
     {
         var item = _cartItemsService.FindItem(cartId, itemId);
