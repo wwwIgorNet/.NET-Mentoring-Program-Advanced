@@ -49,12 +49,12 @@ public class OutboxMessegesConsumerJob(
 
     private void ProcessMessageAsync(object? sender, BasicDeliverEventArgs args)
     {
-        string messageJson = Encoding.UTF8.GetString(args.Body.ToArray());
-        _logger.LogInformation("Retrieved changes from the catalog {0}", messageJson);
+        string message = Encoding.UTF8.GetString(args.Body.ToArray());
+        _logger.LogInformation("Retrieved changes from the catalog {message}", message);
 
         try
         {
-            var json = JsonNode.Parse(messageJson);
+            var json = JsonNode.Parse(message);
             var externalEntityId = json["EntetyId"].GetValue<int>();
             var property = json["Property"].GetValue<string>();
             var value = json["NewValue"].GetValue<string>();
